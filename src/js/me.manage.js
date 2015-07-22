@@ -1,11 +1,12 @@
 /*
- * ManageMe 1.0 (https://github.com/QuatreCentQuatre/manageMe/)
- * make view system easily
+ * ManageMe 1.0.3 (https://github.com/QuatreCentQuatre/manageMe/)
+ * make view system usage easy
  *
  * Licence : GLP v2
  *
  * Dependencies :
- * 	- HelpMe (https://github.com/QuatreCentQuatre/helpMe/)
+ * 	- Underscore (http://underscorejs.org/)
+ * 	- ManageMe-View extension (https://github.com/QuatreCentQuatre/viewMe/)
  *
  * Methods :
  *  - Constructor :
@@ -23,6 +24,16 @@
  * */
 
 (function($, window, document, undefined){
+
+	if (!Array.prototype.indexOf) {
+		Array.prototype.indexOf = function(obj, start) {
+			for (var i = (start || 0), j = this.length; i < j; i++) {
+				if (this[i] === obj) { return i; }
+			}
+			return -1;
+		}
+	}
+
 	var ManageMe = function(options){
 		this.__construct(options);
 	};
@@ -30,12 +41,10 @@
 
 	/* -------- DEFAULTS OPTIONS ------- */
 	proto.__name     = "ManageMe";
-	proto.__version  = 1.0;
+	proto.__version  = 1.02;
 
-	proto.__defaults = {
-	};
-
-	proto.__views = {};
+	proto.__defaults = {};
+	proto.__views = [];
 
 	/* --------- PUBLIC METHODS -------- */
 	proto.__construct = function(options) {
@@ -49,8 +58,13 @@
 
 	proto.__dependencies = function() {
 		var isOk = true;
-		if (!Me.help) {
-			console.warn(proto.__name + " :: " + "required underscore (https://github.com/QuatreCentQuatre/helpMe)");
+		if (!Me.view) {
+			console.warn(proto.__name + " :: " + "required ViewMe (https://github.com/QuatreCentQuatre/viewMe/)");
+			isOk = false;
+		}
+
+		if (!window._) {
+			console.warn(proto.__name + " :: " + "required underscore (http://underscorejs.org/)");
 			isOk = false;
 		}
 		return isOk;
@@ -72,14 +86,15 @@
 	};
 
 	proto.initViews = function($el) {
-		var $views = $el.find('[me-view]');
+		this.checkDeletedViews();
+		var $views = $el.find('[me\\:view]');
 		for (var i = 0; i < $views.length; i++) {
 			var $el = $($views[i]);
-			if ($el.attr('me-view-render')) {
+			if ($el.attr('me:view:render')) {
 				continue;
 			}
-			$el.attr('me-view-render', true);
-			var viewName = $el.attr('me-view');
+			$el.attr('me:view:render', true);
+			var viewName = $el.attr('me:view');
 			if (typeof window[viewName] !== "function") {
 				console.warn("You need to have view that exist.", viewName);
 				continue;
@@ -90,49 +105,79 @@
 				__name:viewName
 			};
 
-			var viewData = $el.attr('me-view-data');
-			var realData = false;
+			var viewData = $el.attr('me:view:data');
 			if (viewData) {
-				var newData;
-				if (viewData.indexOf(',') != -1) {
-					newData = {};
-					viewData = viewData.replace(/ /g, '');
-					viewData = viewData.split(',');
-					_.each(viewData, function(item, index){
-						item = item.split(':');
-						if (item[1].indexOf('[') != -1) {
-							newData[item[0]] = [item[1].replace('[', '').replace(']', '')];
-						}
-						newData[item[0]] = item[1];
-					});
-					viewData = newData;
-					realData = false;
-				} else if (viewData.indexOf('.')) {
-					viewData = viewData.split('.');
-					newData = window;
-					_.each(viewData, function(item, index) {
-						if (newData[item]) {
-							newData = newData[item];
-						} else {
-							newData = {};
-						}
-					});
-
-					if (newData) {
-						realData = true;
-						viewData = _.extend({}, newData);
+				//console.log($el, viewData, window[viewData], viewData.indexOf(':'), viewData.indexOf('.'));
+				if (window[viewData]) {
+					viewData = _.extend({}, window[viewData]);
+				} else if (viewData.indexOf(':') != -1) {
+					if (viewData.indexOf(',') != -1) {
+						viewData = viewData.replace(/ /g, '');
+						viewData = viewData.split(',');
+						viewData = parseParams(viewData);
+					} else {
+						viewData = parseParams(viewData, true);
 					}
+				} else if (viewData.indexOf('.') != -1) {
+					var newData = findVariable(viewData);
+					if (newData) {viewData = _.extend({}, newData);}
 				}
 
-				if (realData) {
-					viewParams.options = _.extend({}, viewData);
-				}
+				if (viewData) {viewParams.options = _.extend({}, viewData);}
 			}
-
-			var viewInstance = new window[viewName](viewParams);
-			//proto.__views[viewInstance.uid] = viewInstance;
+			this.__views.push(new window[viewName](viewParams));
 		}
 	};
+
+	proto.checkDeletedViews = function() {
+		var viewToSave = [];
+		var viewToDelete = [];
+		$.each(this.__views, function(index, view) {
+			if ($('body').find(view.el).length == 0) {
+				viewToDelete.push(view);
+			} else {
+				viewToSave.push(view);
+			}
+		});
+
+		$.each(viewToDelete, function(index, view) {
+			view.__destroy();
+		});
+		this.__views = viewToSave;
+	};
+
+	function parseParams(data, single) {
+		var newData = {};
+		if (!single) {
+			$.each(data, function(index, item) {
+				if (item == "") {return;}
+				parseParam(item, newData);
+			});
+		} else {
+			parseParam(data, newData);
+		}
+		return newData;
+	}
+
+	function parseParam(param, data) {
+		param = param.split(':');
+		if (param[1].indexOf('@') != -1) {
+			data[param[0]] = findVariable(param[1].replace('@', ''));
+		} else if (param[1].indexOf('[') != -1) {
+			data[param[0]] = [param[1].replace('[', '').replace(']', '')];
+		} else {
+			data[param[0]] = param[1];
+		}
+	}
+
+	function findVariable(variable) {
+		var node = window;
+		variable = variable.split('.');
+		_.each(variable, function(item, index) {
+			if (node[item]) {node = node[item];}
+		});
+		return node;
+	}
 
 	proto.toString = function() {
 		return this.__name;
@@ -149,7 +194,34 @@
 	$(document).ready(function(){
 		Me.manage.initViews($('body'));
 	});
+
 }(jQuery, window, document));
+
+
+/*
+ * View 1.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * simple view constructor
+ *
+ * Licence : GLP v2
+ *
+ * Dependencies :
+ * 	- Underscore (http://underscorejs.org/)
+ *
+ * Methods :
+ *  - Constructor :
+ *  	- __construct : inital method
+ *  	- __dependencies : check any depency support and send some errors
+ *
+ * 	- Public :
+ * 		-
+ *
+ * 	- Private :
+ *		-
+ *
+ * Updates Needed :
+ *
+ * */
+
 
 (function($, window, document, undefined){
 	var View = function(options){
@@ -158,8 +230,9 @@
 	var proto = View.prototype;
 
 	/* -------- DEFAULTS OPTIONS ------- */
-	proto.__name     = "View";
-	proto.__version  = 1.0;
+	proto.__name      = "View";
+	proto.__version   = 1.00;
+	proto.__initiated = false;
 
 	proto.__defaults = {
 		el:'',
@@ -171,7 +244,11 @@
 		debug:false
 	};
 
-	proto.options = {};
+	proto.options 	   = {};
+	proto.data 		   = {};
+	proto.translations = null;
+	proto.listeners	   = null;
+	proto.models	   = {};
 
 	var viewProps = ['__name', 'el', 'tagName', 'id', 'className', 'attributes', 'events', 'debug'];
 	/* --------- PUBLIC METHODS -------- */
@@ -188,7 +265,9 @@
 			return this;
 		}
 		//this.addEvents();
-		this.initialize.apply(this, arguments);
+		if (window.Me && Me.dispatch) {Me.dispatch.subscribe("_view.langChanged", this.__langChanged, this);}
+		this.__getTranslations();
+		this.__init.apply(this, arguments);
 		return this;
 	};
 
@@ -230,6 +309,7 @@
 			this.el = this.$el[0];
 		} else {
 			this.$el = $(this.el);
+			this.id  = this.$el.attr('id');
 		}
 		return this;
 	};
@@ -247,9 +327,34 @@
 		return this.$el.html(html);
 	};
 
+	proto.__init = function() {
+		this.__initiated = true;
+		this.initialize.call(this, arguments);
+	};
 	/* Function that need to be overwrite */
-	proto.initialize = function() {};
-	proto.render = function() {};
+	proto.__getTranslations = function() {
+		if (this.translations) {
+			if (!this.locales) {this.locales = {};}
+			var scope = this;
+			$.each(this.translations, function(index, val) {
+				scope.locales[index] = val[SETTINGS.LANGUAGE];
+			});
+			if (this.__initiated) {this.render();}
+		}
+	};
+	proto.__langChanged = function() {
+		this.__getTranslations();
+	};
+	proto.__destroy = function() {
+		if (Me.dispatch) {Me.dispatch.unsubscribe("_view.langChanged", this.__langChanged, this);}
+		if (typeof this.removeEvents === "function") {this.removeEvents();}
+		if (typeof this.destroy === "function") {this.destroy();}
+	};
+
+	proto.initialize   = function() {};
+	proto.addEvents    = function() {};
+	proto.removeEvents = function() {};
+	proto.render       = function() {};
 
 	var privateMethods = {
 	};
