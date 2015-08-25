@@ -5,8 +5,8 @@
  * Licence : GLP v2
  *
  * Dependencies :
+ *  - jQuery (http://jquery.com/)
  * 	- Underscore (http://underscorejs.org/)
- * 	- ManageMe-View extension (https://github.com/QuatreCentQuatre/viewMe/)
  *
  * Methods :
  *  - Constructor :
@@ -48,10 +48,8 @@
 
 	/* --------- PUBLIC METHODS -------- */
 	proto.__construct = function(options) {
-		if (!this.__dependencies()) {
-			return this;
-		}
-		this.options = _.extend({}, this.__defaults);
+		if (!this.__dependencies()) {return this;}
+
 		this.setOptions(options);
 		return this;
 	};
@@ -59,25 +57,25 @@
 	proto.__dependencies = function() {
 		var isOk = true;
 
+        if (!window.$) {
+            console.warn(proto.__name + " :: " + "required jquery (http://jquery.com/)");
+            isOk = false;
+        }
+
 		if (!window._) {
 			console.warn(proto.__name + " :: " + "required underscore (http://underscorejs.org/)");
 			isOk = false;
 		}
+
 		return isOk;
 	};
 
 	proto.setOptions = function(options) {
-		if (!this.__dependencies()) {
-			return this;
-		}
-		this.options = _.extend(this.options, options);
+		this.options = $.extend({}, this.__defaults, options);
 		return this;
 	};
 
 	proto.getOptions = function() {
-		if (!this.__dependencies()) {
-			return this;
-		}
 		return this.options;
 	};
 
