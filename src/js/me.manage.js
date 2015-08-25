@@ -1,5 +1,5 @@
 /*
- * ManageMe 1.0.3 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 1.0.4 (https://github.com/QuatreCentQuatre/manageMe/)
  * make view system usage easy
  *
  * Licence : GLP v2
@@ -23,7 +23,7 @@
  *
  * */
 
-(function($, window, document, undefined){
+;(function($, window, document, undefined){
 
 	if (!Array.prototype.indexOf) {
 		Array.prototype.indexOf = function(obj, start) {
@@ -41,7 +41,7 @@
 
 	/* -------- DEFAULTS OPTIONS ------- */
 	proto.__name     = "ManageMe";
-	proto.__version  = 1.02;
+	proto.__version  = 1.04;
 
 	proto.__defaults = {};
 	proto.__views = [];
@@ -58,10 +58,6 @@
 
 	proto.__dependencies = function() {
 		var isOk = true;
-		if (!Me.view) {
-			console.warn(proto.__name + " :: " + "required ViewMe (https://github.com/QuatreCentQuatre/viewMe/)");
-			isOk = false;
-		}
 
 		if (!window._) {
 			console.warn(proto.__name + " :: " + "required underscore (http://underscorejs.org/)");
@@ -86,8 +82,14 @@
 	};
 
 	proto.initViews = function($el) {
-		this.checkDeletedViews();
+		this.clearViews();
+
+		if(typeof $el === 'undefined'){
+			$el = $('html');
+		}
+
 		var $views = $el.find('[me\\:view]');
+
 		for (var i = 0; i < $views.length; i++) {
 			var $el = $($views[i]);
 			if ($el.attr('me:view:render')) {
@@ -106,8 +108,8 @@
 			};
 
 			var viewData = $el.attr('me:view:data');
+
 			if (viewData) {
-				//console.log($el, viewData, window[viewData], viewData.indexOf(':'), viewData.indexOf('.'));
 				if (window[viewData]) {
 					viewData = _.extend({}, window[viewData]);
 				} else if (viewData.indexOf(':') != -1) {
@@ -125,25 +127,24 @@
 
 				if (viewData) {viewParams.options = _.extend({}, viewData);}
 			}
+
 			this.__views.push(new window[viewName](viewParams));
 		}
 	};
 
-	proto.checkDeletedViews = function() {
-		var viewToSave = [];
-		var viewToDelete = [];
-		$.each(this.__views, function(index, view) {
-			if ($('body').find(view.el).length == 0) {
-				viewToDelete.push(view);
-			} else {
-				viewToSave.push(view);
-			}
-		});
+	proto.clearViews = function() {
+		//Clear inactives views
+		for(var i in this.__views){
+			var view = this.__views[i];
 
-		$.each(viewToDelete, function(index, view) {
-			view.__destroy();
-		});
-		this.__views = viewToSave;
+			if (!$.contains(document, view.$el[0])) {
+				//Element is detached
+
+				view.terminate();
+
+				delete this.__views[i];
+			}
+		}
 	};
 
 	function parseParams(data, single) {
@@ -191,8 +192,9 @@
 	}
 
 	Me.manage = new ManageMe();
+
 	$(document).ready(function(){
-		Me.manage.initViews($('body'));
+		Me.manage.initViews();
 	});
 
 }(jQuery, window, document));
@@ -223,7 +225,7 @@
  * */
 
 
-(function($, window, document, undefined){
+;(function($, window, document, undefined){
 	var View = function(options){
 		this.__construct(options);
 	};
@@ -256,18 +258,19 @@
 		if (!this.__dependencies()) {
 			return this;
 		}
+
 		this.setOptions(options);
 		this.setElement();
+
 		if (!this.el || this.el == "") {
 			if (this.debug) {
 				console.warn("Your view el doesn't exist.");
 			}
 			return this;
 		}
-		//this.addEvents();
-		if (window.Me && Me.dispatch) {Me.dispatch.subscribe("_view.langChanged", this.__langChanged, this);}
-		this.__getTranslations();
+
 		this.__init.apply(this, arguments);
+
 		return this;
 	};
 
@@ -332,28 +335,10 @@
 		this.initialize.call(this, arguments);
 	};
 	/* Function that need to be overwrite */
-	proto.__getTranslations = function() {
-		if (this.translations) {
-			if (!this.locales) {this.locales = {};}
-			var scope = this;
-			$.each(this.translations, function(index, val) {
-				scope.locales[index] = val[SETTINGS.LANGUAGE];
-			});
-			if (this.__initiated) {this.render();}
-		}
-	};
-	proto.__langChanged = function() {
-		this.__getTranslations();
-	};
-	proto.__destroy = function() {
-		if (Me.dispatch) {Me.dispatch.unsubscribe("_view.langChanged", this.__langChanged, this);}
-		if (typeof this.removeEvents === "function") {this.removeEvents();}
-		if (typeof this.destroy === "function") {this.destroy();}
-	};
-
 	proto.initialize   = function() {};
 	proto.addEvents    = function() {};
 	proto.removeEvents = function() {};
+	proto.terminate    = function() {};
 	proto.render       = function() {};
 
 	var privateMethods = {

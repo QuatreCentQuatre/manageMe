@@ -1,13 +1,19 @@
 <!doctype html>
 <head>
-    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-
-    <script src="../src/js/me.manage.js"></script>
-
-    <script src="views/header.js"></script>
-    <script src="app.main.js"></script>
+    <title>ManageMe demo page</title>
 </head>
 <body>
-<div id="header" me:view="headerView"></div>
+<div id="demo" me:view="DemoView">
+    This is the demo content managed by the Demo view.
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+<script src="../src/js/me.manage.js"></script>
+
+<script src="views/demo.js"></script>
+<script src="app.main.js"></script>
+
 </body>
 </html>
