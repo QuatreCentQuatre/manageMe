@@ -50,69 +50,74 @@ class ViewManager {
         return this.options;
     }
 
-	initViews($root) {
-		this.clearViews();
+    initViews($root) {
+        this.clearViews();
 
-		if(typeof $root === 'undefined'){$root = $('html');}
-		var $views = $root.find('[me\\:view]');
-		let newViews = [];
+        if(typeof $root === 'undefined'){$root = $('html');}
+        var $views = $root.find('[me\\:view]');
+        let newViews = [];
 
-		for (let i = 0; i < $views.length; i++) {
+        for (let i = 0; i < $views.length; i++) {
 
-			let $el = $($views[i]);
-			if ($el.attr('me:view:render')) {continue;}
-			$el.attr('me:view:render', "true");
+            let $el = $($views[i]);
+            if ($el.attr('me:view:render')) {continue;}
+            $el.attr('me:view:render', "true");
 
-			let viewName = $el.attr('me:view');
-			if (typeof window[viewName] !== "function") {
-				console.warn("You need to have view that exist.", viewName);
-				continue;
-			}
+            let viewName = $el.attr('me:view');
+            if (typeof window[viewName] !== "function") {
+                console.warn("You need to have view that exist.", viewName);
+                continue;
+            }
 
-			let viewParams = {el:$el[0], name:viewName, options: {}};
-			let viewDataString = $el.attr('me:view:data');
-			let viewData;
+            let viewParams = {el:$el[0], name:viewName, options: {}};
+            let viewDataString = $el.attr('me:view:data');
+            let viewData;
 
-			if (viewDataString) {
-				// if is object in window
-				if (window[viewDataString]) {
-					viewData = _.extend({}, window[viewDataString]);
-				}
-				// if is an object
-				else if (viewDataString.indexOf(':') != -1) {
-					if (viewDataString.indexOf(',') != -1) {
-						viewData = viewDataString.replace(/ /g, '');
-						viewData = viewData.split(',');
-						viewData = this.parseParams(viewData, false);
-					} else {
-						viewData = this.parseParams(viewDataString, true);
-					}
-				}
-				// if is nested object in window
-				else if (viewDataString.indexOf('.') != -1) {
-					var newData = this.findVariable(viewDataString);
-					if (newData) {viewData = _.extend({}, newData);}
-				}
-			}
+            if (viewDataString) {
+                // if is object in window
+                if (window[viewDataString]) {
+                    viewData = _.extend({}, window[viewDataString]);
+                }
+                // if is an object
+                else if (viewDataString.indexOf(':') != -1) {
+                    if (viewDataString.indexOf(',') != -1) {
+                        viewData = viewDataString.replace(/ /g, '');
+                        viewData = viewData.split(',');
+                        viewData = this.parseParams(viewData, false);
+                    } else {
+                        viewData = this.parseParams(viewDataString, true);
+                    }
+                }
+                // if is nested object in window
+                else if (viewDataString.indexOf('.') != -1) {
+                    var newData = this.findVariable(viewDataString);
+                    if (newData) {viewData = _.extend({}, newData);}
+                }
+            }
 
-			if (viewData) {viewParams.options = _.extend({}, viewData);}
+            if (viewData) {viewParams.options = _.extend({}, viewData);}
 
-			var view = new window[viewName](viewParams);
+
+
+            var view = new window[viewName](viewParams);
+
 			this.views.push(view);
 			newViews.push(view);
-		}
+        }
 
-		for (let j = 0; j < newViews.length; j++) {
+        for (let j = 0; j < newViews.length; j++) {
 			newViews[j].init();
-		}
-	};
+        }
+    };
 
     clearViews() {
         var activeViews  = [];
         var deletedViews = [];
         for (var i in this.views) {
             var view = this.views[i];
-            var selector = $('html').find(view.$el[0]);
+            if(typeof view.$el == "object"){
+				var selector = $('html').find(view.$el[0]);
+            }
             if (selector.length > 0) {
                 activeViews.push(view);
             } else {

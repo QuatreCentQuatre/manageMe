@@ -25,6 +25,7 @@ class ViewBasic {
         this.setOptions(options);
         this.setElement();
 
+
         if (!this.el || this.el == "") {
             if (this.debug) {
                 console.warn("Your view el doesn't exist.");
@@ -32,8 +33,17 @@ class ViewBasic {
             return this;
         }
 
-        this.init.apply(this, arguments);
+        var ref = this;
+        Me.dispatch.subscribe('ManageMe.initViews', function(){
+            ref.init.apply(ref, arguments);
+        });
 
+        this.addDispatchListener();
+
+
+    }
+
+    addDispatchListener(){
     }
 
     lookAtDependencies() {
