@@ -10,7 +10,7 @@ Dependencies
 
 - jQuery (https://jquery.com/)
 
-##How to implement
+## How to implement
 
 At first, you'll need to link jQuery and manageMe in your project 
 ```html
@@ -22,7 +22,7 @@ At first, you'll need to link jQuery and manageMe in your project
 Then you're already good to go and create your first view!
 
 
-###Create your first view
+### Create your first view
 To create a view, you'll need to add in a script tag or in a JS file the following code:
 
 
@@ -71,7 +71,7 @@ Then when the page will be loaded, the View manager will take care of everything
 your **DemoView** and **initialize()** will be call. You can add a console.log() to confirm that 
 it enters the **initialize** method.
 
-###Pass data to your view
+### Pass data to your view
 
 If you need data provided by the Backend in your Javascript view, you can add a simple attribute. 
 On the same element where the **me:view** is set, you can add the attribute **me:view:data**.
@@ -105,7 +105,7 @@ initialize(){
 
 ## View Manager functions
 
-###Initialize new view
+### Initialize new view
 In case you need to add DOM and that DOM has a view in it, you'll need to call a function to create and 
 initialize all of the new views added to the DOM. Right after you append new DOM, simply call the function **initViews()** of Me.manage.
 
@@ -119,7 +119,7 @@ Me.manage.initViews();
 Me.manage.initViews($('.container'));
 ```
 
-###Clear deleted views
+### Clear deleted views
 
 When deleting DOM that contains one or multiple views, you should clear them.
 Simply call the **clearViews** function and the View Manager will take care of the rest. 
@@ -137,9 +137,9 @@ removeEvents(){
 };
 ```
 
-##ViewBasic functions
+## ViewBasic functions
 
-###initialize()
+### initialize()
 
 This is the function that will be call be the View Manager once all views are created. You can declare options, variables, etc ...
 Most of the time it will end with a call to the **addEvents** function.
@@ -152,7 +152,7 @@ initialize(){
 };
 ```
 
-###addEvents()
+### addEvents()
 This is where you set most of your listener. 
 
 ```javascript
@@ -167,7 +167,7 @@ How to use
 this.addEvents();
 ```
 
-###removeEvents()
+### removeEvents()
 This is where you remove your listeners. This function will be call by terminate once the view is deleted.
 
 ```javascript
@@ -182,7 +182,7 @@ How to use
 this.removeEvents();
 ```
 
-###terminate()
+### terminate()
 Usualy, you do not have to modify this function. It is called when you delete a view and then it will call **removeEvents** function
 
 ```javascript
@@ -197,7 +197,7 @@ How to use
 this.terminate();
 ```
 
-###$(selector)
+### $(selector)
 This function serve as helper to target element in the scope of your current view.
 This function accept a single parameter. It must be a string selector and returns a jQuery object.
 
