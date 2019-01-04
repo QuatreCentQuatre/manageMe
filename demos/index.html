@@ -4,16 +4,30 @@
 </head>
 <body>
 <div id="demo" me:view="DemoView">
-    This is the demo content managed by the Demo view.
+    <p>This is the demo content managed by the Demo view.</p>
+    <button id="add-view">Add new element with a view and init new view</button>
+    <button id="add-view-no-init">Add new element with a view without init new view</button>
+    <section id="element-view-wrapper">
+
+    </section>
+    <div class="actions" style="margin-top: 20px;">
+        <button id="init-views">Init all views</button>
+    </div>
 </div>
 
 <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
-<script src="../src/ES5/js/me.manage.js"></script>
+<!--Only needed for ES5 version-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>-->
 
-<script src="views/demo.js"></script>
-<script src="app.main.js"></script>
+<script src="../src/me.manage.js"></script>
+<script src="../src/me.manage.view.js"></script>
+
+<script src="app.config.js"></script>
+
+<script src="views/ES6/demo.js"></script>
+<script src="views/ES6/increment.js"></script>
+
 
 </body>
 </html>
