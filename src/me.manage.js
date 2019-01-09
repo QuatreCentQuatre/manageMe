@@ -1,5 +1,5 @@
 /*
- * ManageMe 3.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 2.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :
@@ -7,17 +7,16 @@
  *
  * Methods:
  * 	- setOptions(options)
-* 	- getOptions()
-* 	- initViews($rootElement = $('html'))
-* 	- clearViews()
-* 	- toString()
-
-*/
+ * 	- getOptions()
+ * 	- initViews($rootElement = $('html'))
+ * 	- clearViews()
+ * 	- toString()
+ *
+ */
 
 class ViewManager {
 	constructor(options) {
 		this.name     = "ViewManager";
-		this.version  = 3.00;
 		this.defaults = {};
 		this.views    = [];
 		this.options = {};

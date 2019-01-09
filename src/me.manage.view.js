@@ -12,7 +12,7 @@
  * 	- terminate()
  * 	- $(selector)
  * 	- toString()
-
+ *
  */
 
 class ViewBasic{
