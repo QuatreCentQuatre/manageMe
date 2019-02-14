@@ -129,9 +129,8 @@ class ViewManager {
 	}
 }
 
-if (!Me) {}
+if(!window.Me){window.Me = {};}
 
-if (!window['Me']) {let Me = {};}
 Me.manage = new ViewManager();
 Me.views = [];
 
