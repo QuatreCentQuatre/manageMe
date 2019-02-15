@@ -113,11 +113,12 @@ class ViewManager {
 			let view = this.views[i];
 			if(typeof view.$el == "object"){
 				let selector = $('html').find(view.$el[0]);
-			}
-			if (selector.length > 0) {
-				activeViews.push(view);
-			} else {
-				view.terminate();
+				
+				if (selector.length > 0) {
+					activeViews.push(view);
+				} else {
+					view.terminate();
+				}
 			}
 		}
 
