@@ -71,9 +71,7 @@ class ViewManager {
 
 			/* Add data to view */
 			let viewData = $view.attr('me:view:data');
-			if(viewData){
-				viewParams.params.data = JSON.parse($view.attr('me:view:data'));
-			}
+			viewParams.params.data = (viewData) ? JSON.parse(viewData) : {};
 
 			/* Create instance of the view */
 			let view = new Me.views[viewName](viewParams);
