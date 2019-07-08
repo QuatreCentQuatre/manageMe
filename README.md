@@ -1,7 +1,7 @@
 manageMe
 ========
 
-Version - 2.0.0
+Version - 2.0.1
 - Refactor for ES6
 - Split View manager and Base view into two distinct class
 - Add new demo
