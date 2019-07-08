@@ -9,11 +9,18 @@ Version - 2.0.0
 Dependencies
 
 - jQuery (https://jquery.com/)
+- Babel Polyfill (https://babeljs.io/docs/en/6.26.3/babel-polyfill)
 
 ## How to implement
 
-At first, you'll need to link jQuery and manageMe in your project 
+First, you'll need to download / install Polyfill in your project via NPM.
+```javascript
+npm install --save babel-polyfill
+```
+
+Then, you'll need to link Babel Polyfill, jQuery and manageMe in your project 
 ```html
+<script type="text/javascript" src="/path/to/directory/polyfill.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="/path/to/directory/me.manage.js"></script>
 <script src="/path/to/directory/me.manage.view.js"></script>
