@@ -22,6 +22,7 @@ class ViewManager {
 		this.options = {};
 
 		this.setOptions(options);
+		console.log('manageMe installed');
 	}
 
 	setOptions(options) {
