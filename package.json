@@ -3,6 +3,21 @@
   "version": "2.0.0",
   "author": "QuatreCentQuatre team <info@quatrecentquatre.com> (https://www.quatrecentquatre.com/)",
   "dependencies": {
-    "babel-polyfill": "^6.26.0"
-  }
+    "babel-polyfill": "^6.26.0",
+    "jquery": "^3.2.1"
+  },
+  "contributors": [
+    {
+      "name": "Samuel Cléroux Bouthillier",
+      "url": ""
+    },
+    {
+      "name": "Nicolas Lemoyne",
+      "url": ""
+    },
+    {
+      "name": "Flavien Grevillot",
+      "url": ""
+    }
+  ]
 }
