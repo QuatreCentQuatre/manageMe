@@ -1,6 +1,9 @@
 manageMe
 ========
 
+Version - 2.1.0
+- Added build task to transpile sources files into dist/ folder
+
 Version - 2.0.1
 - Refactor for ES6
 - Split View manager and Base view into two distinct class
@@ -9,7 +12,7 @@ Version - 2.0.1
 Dependencies
 
 - jQuery (https://jquery.com/)
-- Babel Polyfill (https://babeljs.io/docs/en/6.26.3/babel-polyfill)
+- Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
 
 ## How to implement
 
@@ -17,8 +20,8 @@ First, you'll need to link Babel Polyfill, jQuery and manageMe in your project
 ```html
 <script type="text/javascript" src="/path/to/directory/polyfill.js"></script>
 <script type="text/javascript" src="/path/to/directory/jquery.js"></script>
-<script src="/path/to/directory/me.manage.js"></script>
-<script src="/path/to/directory/me.manage.view.js"></script>
+<script src="/path/to/directory/me.manage.min.js"></script>
+<script src="/path/to/directory/me.manage.view.min.js"></script>
 ```
 
 Then you're already good to go and create your first view!
@@ -82,10 +85,6 @@ PHP
 ```php 
 //$data is an object
 <div id="demo" me:view="DemoView" me:view:data="<?php echo json_encode($data, JSON_HEX_APOS); ?>"></div>
-
-//TWIG
-//data is an object
-<div id="demo" me:view="DemoView" me:view:data="{{ data|json_encode(constant('JSON_HEX_APOS')) }}"></div>
 ```
 
 TWIG
