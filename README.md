@@ -1,6 +1,10 @@
 manageMe
 ========
 
+Version - 3.0.0
+- Replaced dots by dashes into filenames
+- Added concat to build task
+
 Version - 2.1.0
 - Added build task to transpile sources files into dist/ folder
 
@@ -20,8 +24,7 @@ First, you'll need to link Babel Polyfill, jQuery and manageMe in your project
 ```html
 <script type="text/javascript" src="/path/to/directory/polyfill.js"></script>
 <script type="text/javascript" src="/path/to/directory/jquery.js"></script>
-<script src="/path/to/directory/me.manage.min.js"></script>
-<script src="/path/to/directory/me.manage.view.min.js"></script>
+<script src="/path/to/directory/me-manage.min.js"></script>
 ```
 
 Then you're already good to go and create your first view!

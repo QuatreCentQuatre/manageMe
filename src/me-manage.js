@@ -1,5 +1,5 @@
 /*
- * ManageMe 2.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 3.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :

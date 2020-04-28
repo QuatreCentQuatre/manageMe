@@ -1,5 +1,5 @@
 /*
- * ViewBasic 1.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 2.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
