@@ -12,8 +12,8 @@ const distPath = 'dist/';
 
 function js() {
     return src(sourceFiles)
-        .pipe(gulpBabel())
         .pipe(gulpConcat('me-manage.js'))
+        .pipe(gulpBabel())
         .pipe(dest(distPath))
         .pipe(gulpUglify())
         .pipe(gulpRename({ extname: '.min.js' }))
