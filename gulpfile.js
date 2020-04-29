@@ -1,12 +1,12 @@
 const { src, dest } = require('gulp');
 const gulpBabel = require('gulp-babel');
 const gulpConcat = require('gulp-concat');
-const gulpUglify = require('gulp-uglify');
 const gulpRename = require('gulp-rename');
+const gulpUglify = require('gulp-uglify');
 
 const sourceFiles = [
     'src/me-manage.js',
-    'src/me-manage-view.js',
+    'src/*.js',
 ];
 const distPath = 'dist/';
 
@@ -16,7 +16,7 @@ function js() {
         .pipe(gulpBabel())
         .pipe(dest(distPath))
         .pipe(gulpUglify())
-        .pipe(gulpRename({ extname: '.min.js' }))
+        .pipe(gulpRename({ suffix: '.min' }))
         .pipe(dest(distPath));
 }
 

@@ -2,11 +2,9 @@ manageMe
 ========
 
 Version - 3.0.0
-- Replaced dots by dashes into filenames
-- Added concat to build task
-
-Version - 2.1.0
+- Replaced dots by dashes into source filenames
 - Added build task to transpile sources files into dist/ folder
+- Updated demo
 
 Version - 2.0.1
 - Refactor for ES6
@@ -15,8 +13,8 @@ Version - 2.0.1
 
 Dependencies
 
-- jQuery (https://jquery.com/)
 - Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
+- jQuery (https://jquery.com/)
 
 ## How to implement
 
