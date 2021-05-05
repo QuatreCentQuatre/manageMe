@@ -1,7 +1,12 @@
 class DemoView extends ViewBasic {
+	defaults(){
+		return {
+			'template': 'modal'
+		}
+	}
+	
 	constructor(options) {
 		super(options);
-
 
 		this.viewTemplate = `
 			<br>

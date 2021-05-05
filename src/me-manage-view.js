@@ -1,11 +1,12 @@
 /*
- * ViewBasic 2.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
  *  - GNU v2
  *
  * Methods:
+ * 	- default()
  * 	- initialize()
  * 	- addEvents()
  * 	- removeEvents()
@@ -23,6 +24,26 @@ class ViewBasic{
 	* If you add any data in me.manage.js in initView, make sure to add the data in the constructor.
 	*
 	* */
+	
+	/*
+	*
+	* defaults()
+	* - Can be overwrite. This method will be called in the constructor of the base view. You need to set default object
+	*
+	* Params:
+	* None
+	*
+	* Output:
+	* None
+	*
+	* Results:
+	* The returned object, will be merge with the params value;
+	*
+	* */
+	
+	defaults(){
+		return {};
+	}
 
 	constructor(options) {
 		this.name = (options.name) ? options.name : 'ViewBasic';
@@ -32,7 +53,7 @@ class ViewBasic{
 
 		this.el = options.el;
 		this.$el = $(options.el);
-		this.params = (options.params) ? options.params : {};
+		this.params = Object.assign(this.defaults(), options.params);
 	}
 
 	/*

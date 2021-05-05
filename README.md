@@ -1,5 +1,8 @@
 manageMe
-========
+=======
+Version - 3.0.1
+- Fix merging default value with data passed as params
+- Cleaning useless function in the viewManager
 
 Version - 3.0.0
 - Replaced dots by dashes into source filenames
@@ -140,6 +143,16 @@ removeEvents(){
 ```
 
 ## ViewBasic functions
+
+### defaults()
+
+This is the function where you set the default params for your class.
+
+```javascript
+defaults(){
+    return {};
+};
+```
 
 ### initialize()
 

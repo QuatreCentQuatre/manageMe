@@ -5,7 +5,7 @@
     <title>ManageMe demo page</title>
 </head>
 <body>
-<div id="demo" me:view="DemoView">
+<div id="demo" me:view="DemoView" me:view:data='{"1":"2"}'>
     <p>This is the demo content managed by the Demo view.</p>
     <button id="add-view">Add new element with a view and init new view</button>
     <button id="add-view-no-init">Add new element with a view without init new view</button>
@@ -20,7 +20,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@babel/polyfill@7.8.7/dist/polyfill.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
-<script src="../dist/me-manage.min.js"></script>
+<!--<script src="../dist/me-manage.min.js"></script>-->
+<script src="../src/me-manage.js"></script>
+<script src="../src/me-manage-view.js"></script>
 
 <script src="app.config.js"></script>
 

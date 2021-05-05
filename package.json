@@ -1,6 +1,6 @@
 {
   "name": "manage-me",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "QuatreCentQuatre team <info@quatrecentquatre.com> (https://www.quatrecentquatre.com/)",
   "scripts": {
     "production": "node_modules/gulp/bin/gulp.js build"

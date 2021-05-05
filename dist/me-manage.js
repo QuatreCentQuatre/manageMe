@@ -9,58 +9,43 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /*
- * ManageMe 3.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :
  *  - GNU v2
  *
  * Methods:
- * 	- setOptions(options)
- * 	- getOptions()
  * 	- initViews($rootElement = $('html'))
  * 	- clearViews()
  * 	- toString()
  *
  */
 var ViewManager = /*#__PURE__*/function () {
-  function ViewManager(options) {
+  function ViewManager() {
     _classCallCheck(this, ViewManager);
 
     this.name = "ViewManager";
-    this.defaults = {};
     this.views = [];
-    this.options = {};
-    this.setOptions(options);
   }
+  /*
+  *
+  * initViews($rootElement)
+  * - Will init all views
+  *
+  * Params:
+  * - $rootElement : Accept one parameter to define where the search of views will start in the DOM
+  *
+  * Output:
+  * No output
+  *
+  * Results:
+  * It will instantiate all views in DOM and trigger their init once they are all created.
+  *
+  * */
+
 
   _createClass(ViewManager, [{
-    key: "setOptions",
-    value: function setOptions(options) {
-      this.options = Object.assign(this.options, this.defaults, options);
-    }
-  }, {
-    key: "getOptions",
-    value: function getOptions() {
-      return this.options;
-    }
-    /*
-    *
-    * initViews($rootElement)
-    * - Will init all views
-    *
-    * Params:
-    * - $rootElement : Accept one parameter to define where the search of views will start in the DOM
-    *
-    * Output:
-    * No output
-    *
-    * Results:
-    * It will instantiate all views in DOM and trigger their init once they are all created.
-    *
-    * */
-
-  }, {
     key: "initViews",
     value: function initViews() {
       var $rootElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $('html');
@@ -93,7 +78,7 @@ var ViewManager = /*#__PURE__*/function () {
         /* Add data to view */
 
         var viewData = $view.attr('me:view:data');
-        viewParams.params.data = viewData ? JSON.parse(viewData) : {};
+        viewParams.params = viewData ? JSON.parse(viewData) : {};
         /* Create instance of the view */
 
         var view = new Me.views[viewName](viewParams);
@@ -168,13 +153,14 @@ $(document).ready(function () {
   Me.manage.initViews();
 });
 /*
- * ViewBasic 2.0.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
  *  - GNU v2
  *
  * Methods:
+ * 	- default()
  * 	- initialize()
  * 	- addEvents()
  * 	- removeEvents()
@@ -185,13 +171,37 @@ $(document).ready(function () {
  */
 
 var ViewBasic = /*#__PURE__*/function () {
-  /*
-  *
-  * When manage me create an instance of a view, it will pass in this constructor first.
-  *
-  * If you add any data in me.manage.js in initView, make sure to add the data in the constructor.
-  *
-  * */
+  _createClass(ViewBasic, [{
+    key: "defaults",
+
+    /*
+    *
+    * When manage me create an instance of a view, it will pass in this constructor first.
+    *
+    * If you add any data in me.manage.js in initView, make sure to add the data in the constructor.
+    *
+    * */
+
+    /*
+    *
+    * defaults()
+    * - Can be overwrite. This method will be called in the constructor of the base view. You need to set default object
+    *
+    * Params:
+    * None
+    *
+    * Output:
+    * None
+    *
+    * Results:
+    * The returned object, will be merge with the params value;
+    *
+    * */
+    value: function defaults() {
+      return {};
+    }
+  }]);
+
   function ViewBasic(options) {
     _classCallCheck(this, ViewBasic);
 
@@ -201,7 +211,7 @@ var ViewBasic = /*#__PURE__*/function () {
     };
     this.el = options.el;
     this.$el = $(options.el);
-    this.params = options.params ? options.params : {};
+    this.params = Object.assign(this.defaults(), options.params);
   }
   /*
   *
