@@ -1,5 +1,5 @@
 /*
- * ManageMe 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :
@@ -70,8 +70,17 @@ class ViewManager {
 		}
 
 		/* Initialize all new views*/
-		for (let j = 0; j < newViews.length; j++) {
-			newViews[j].initialize();
+		for(const i in newViews) {
+			newViews[i].initialize();
+		}
+		
+		for(const i in newViews){
+			var view = newViews[i];
+			
+			if(!view.afterAllViewInitialized){
+				view.afterAllViewInitialize();
+				view.afterAllViewInitialized = true;
+			}
 		}
 	}
 

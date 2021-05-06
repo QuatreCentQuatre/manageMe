@@ -1,5 +1,5 @@
 /*
- * ViewBasic 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
@@ -8,6 +8,7 @@
  * Methods:
  * 	- default()
  * 	- initialize()
+ *  - afterAllViewInitialize()
  * 	- addEvents()
  * 	- removeEvents()
  * 	- terminate()
@@ -74,6 +75,23 @@ class ViewBasic{
 	initialize(){
 		this.addEvents();
 	};
+
+	/*
+	*
+	* afterAllViewInitialize()
+	* - Can be overwrite. This method will be called once all views are initialized
+	*
+	* Params:
+	* None
+	*
+	* Output:
+	* None
+	*
+	* Results:
+	* Code inside will be run after all view in DOM are initialized
+	*
+	* */
+	afterAllViewInitialize(){};
 
 	/*
 	*

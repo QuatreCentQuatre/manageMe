@@ -1,5 +1,8 @@
 manageMe
 =======
+Version - 3.1.0
+- Add function afterAllViewInitialize to have the possibility to trigger events after all view instances are created.
+
 Version - 3.0.1
 - Fix merging default value with data passed as params
 - Cleaning useless function in the viewManager
@@ -164,6 +167,16 @@ initialize(){
     //Add thing here before addEvents
 	
     this.addEvents();
+};
+```
+
+### afterAllViewInitialize()
+
+This function will be triggered once all views are created. If you're looking to trigger an event when the view is loaded, you should trigger the event in this function. That way you'll be sure that all class will exist.
+```javascript
+afterAllViewInitialize(){
+  //Example
+  Me.dispatch.emit('event-name', this, {});
 };
 ```
 

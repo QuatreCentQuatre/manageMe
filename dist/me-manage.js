@@ -9,7 +9,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /*
- * ManageMe 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :
@@ -81,19 +81,29 @@ var ViewManager = /*#__PURE__*/function () {
         viewParams.params = viewData ? JSON.parse(viewData) : {};
         /* Create instance of the view */
 
-        var view = new Me.views[viewName](viewParams);
+        var _view = new Me.views[viewName](viewParams);
         /* Keep reference of the global view in this class */
 
-        this.views.push(view);
+
+        this.views.push(_view);
         /* Assign the view in an array to initialize them later */
 
-        newViews.push(view);
+        newViews.push(_view);
       }
       /* Initialize all new views*/
 
 
-      for (var j = 0; j < newViews.length; j++) {
-        newViews[j].initialize();
+      for (var _i in newViews) {
+        newViews[_i].initialize();
+      }
+
+      for (var _i2 in newViews) {
+        var view = newViews[_i2];
+
+        if (!view.afterAllViewInitialized) {
+          view.afterAllViewInitialize();
+          view.afterAllViewInitialized = true;
+        }
       }
     }
     /*
@@ -153,7 +163,7 @@ $(document).ready(function () {
   Me.manage.initViews();
 });
 /*
- * ViewBasic 3.0.1 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
@@ -162,6 +172,7 @@ $(document).ready(function () {
  * Methods:
  * 	- default()
  * 	- initialize()
+ *  - afterAllViewInitialize()
  * 	- addEvents()
  * 	- removeEvents()
  * 	- terminate()
@@ -235,6 +246,25 @@ var ViewBasic = /*#__PURE__*/function () {
     value: function initialize() {
       this.addEvents();
     }
+  }, {
+    key: "afterAllViewInitialize",
+
+    /*
+    *
+    * afterAllViewInitialize()
+    * - Can be overwrite. This method will be called once all views are initialized
+    *
+    * Params:
+    * None
+    *
+    * Output:
+    * None
+    *
+    * Results:
+    * Code inside will be run after all view in DOM are initialized
+    *
+    * */
+    value: function afterAllViewInitialize() {}
   }, {
     key: "addEvents",
 
