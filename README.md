@@ -1,5 +1,9 @@
 manageMe
 =======
+
+Version - 3.2.0
+- Remove jQuery dependency
+
 Version - 3.1.0
 - Add function afterAllViewInitialize to have the possibility to trigger events after all view instances are created.
 
@@ -124,7 +128,7 @@ The parameter **must** be an **element**.
 ```javascript
 Me.manage.initViews();
 // or
-Me.manage.initViews($('.container'));
+Me.manage.initViews(document.querySelector('.container'));
 ```
 
 ### Clear deleted views
@@ -141,7 +145,7 @@ Me.manage.clearViews();
 In every view that will be deleted we make sure that all events are removed.
 ```javascript
 removeEvents(){
-    this.$('.btn').off('click');
+    this.el.querySelector('.btn').removeEventListener('click', ()=>{ ... });
 };
 ```
 
@@ -185,7 +189,7 @@ This is where you set most of your listener.
 
 ```javascript
 addEvents(){
-    this.$('.btn').on('click', function ()=>{});
+    this.el.querySelector('.btn').addEventListener('click', ()=>{ ... });
 };
 ```
 
@@ -200,7 +204,7 @@ This is where you remove your listeners. This function will be call by terminate
 
 ```javascript
 removeEvents(){
-    this.$('.btn').off('click');
+    this.el.querySelector('.btn').removeEventListener('click');
 };
 ```
 
@@ -223,20 +227,4 @@ How to use
 
 ```javascript
 this.terminate();
-```
-
-### $(selector)
-This function serve as helper to target element in the scope of your current view.
-This function accept a single parameter. It must be a string selector and returns a jQuery object.
-
-```javascript
-$(selector) {
-    return this.$el.find(selector);
-};
-```
-
-How to use
-
-```javascript
-this.$('.container');
 ```

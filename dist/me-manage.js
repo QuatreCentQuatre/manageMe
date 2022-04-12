@@ -48,7 +48,8 @@ var ViewManager = /*#__PURE__*/function () {
   _createClass(ViewManager, [{
     key: "initViews",
     value: function initViews() {
-      var $rootElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $('html');
+      var $rootElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.getElementsByTagName('html');
+      console.log($rootElement);
       this.clearViews();
       var views = $rootElement.find('[me\\:view]');
       var newViews = [];

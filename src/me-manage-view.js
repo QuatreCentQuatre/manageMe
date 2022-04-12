@@ -1,5 +1,5 @@
 /*
- * ViewBasic 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 3.2.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
@@ -53,7 +53,6 @@ class ViewBasic{
 		};
 
 		this.el = options.el;
-		this.$el = $(options.el);
 		this.params = Object.assign(this.defaults(), options.params);
 	}
 
@@ -158,10 +157,6 @@ class ViewBasic{
 	* The selector you were looking for
 	*
 	* */
-
-	$(selector) {
-		return this.$el.find(selector);
-	};
 
 	toString(){
 		return this.name;

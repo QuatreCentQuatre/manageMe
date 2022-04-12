@@ -22,28 +22,30 @@ class DemoView extends ViewBasic {
 	}
 
 	initialize() {
-		this.$btnAddView =  this.$('#add-view');
-		this.$btnAddViewNoInit =  this.$('#add-view-no-init');
-		this.$btnInitView =  this.$('#init-views');
-		this.$elViewWrapper = this.$('#element-view-wrapper');
+		this.$btnAddView =  this.el.querySelector('#add-view');
+		this.$btnAddViewNoInit =  this.el.querySelector('#add-view-no-init');
+		this.$btnInitView =  this.el.querySelector('#init-views');
+		this.$elViewWrapper = this.el.querySelector('#element-view-wrapper');
 
 		this.addEvents();
 	}
 
 	addEvents() {
-		this.$btnAddView.on('click', ()=>{
+		this.$btnAddView.addEventListener('click', ()=>{
 			this.addViewElement(true);
 		});
-		this.$btnAddViewNoInit.on('click', ()=>{
+
+		this.$btnAddViewNoInit.addEventListener('click', ()=>{
 			this.addViewElement(false);
 		});
-		this.$btnInitView.on('click', ()=>{
+
+		this.$btnInitView.addEventListener('click', ()=>{
 			Me.manage.initViews();
 		});
 	}
 
 	addViewElement(init){
-		this.$elViewWrapper.append(this.viewTemplate);
+		this.$elViewWrapper.insertAdjacentHTML('afterend',this.viewTemplate);
 
 		if(init){
 			Me.manage.initViews();

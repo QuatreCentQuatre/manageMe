@@ -5,13 +5,14 @@ class IncrementView extends ViewBasic {
 
 	initialize() {
 		this.eventsAdded = false;
-		this.$incrementBtn = this.$('.increment-btn');
-		this.$toogleEventsBtn = this.$('.toggle-events');
-		this.$value = this.$('.value');
-		this.value = parseInt(this.$value.html());
+		this.incrementActive = true;
+		this.$incrementBtn = this.el.querySelector('.increment-btn');
+		this.$toogleEventsBtn = this.el.querySelector('.toggle-events');
+		this.$value = this.el.querySelector('.value');
+		this.value = parseInt(this.$value.innerHTML);
 
 		//Exception: Don't want the toggle event to repeat every time we turn off and on events
-		this.$toogleEventsBtn.on('click', ()=>{
+		this.$toogleEventsBtn.addEventListener('click', ()=>{
 			this.toogleEvents();
 		});
 
@@ -19,7 +20,7 @@ class IncrementView extends ViewBasic {
 	};
 
 	addEvents() {
-		this.$incrementBtn.on('click', ()=>{
+		this.$incrementBtn.addEventListener('click', ()=>{
 			this.incrementValue();
 		});
 
@@ -27,23 +28,20 @@ class IncrementView extends ViewBasic {
 	};
 
 	incrementValue(){
+		if(!this.incrementActive)
+			return;
+
 		this.value ++;
-		this.$value.html(this.value);
+		this.$value.innerHTML = this.value;
 	};
 
 	toogleEvents(){
 		if(this.eventsAdded){
-			this.removeEvents();
-		} else{
-			this.addEvents();
+			this.incrementActive = !this.incrementActive;
 		}
 	}
 
-	removeEvents() {
-		this.$incrementBtn.off('click');
-
-		this.eventsAdded = false;
-	};
+	removeEvents() {};
 
 	terminate() {
 		this.removeEvents();
