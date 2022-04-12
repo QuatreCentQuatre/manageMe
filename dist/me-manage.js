@@ -9,7 +9,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /*
- * ManageMe 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 3.2.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :
@@ -48,17 +48,16 @@ var ViewManager = /*#__PURE__*/function () {
   _createClass(ViewManager, [{
     key: "initViews",
     value: function initViews() {
-      var $rootElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.getElementsByTagName('html');
-      console.log($rootElement);
+      var $rootElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.querySelector('html');
       this.clearViews();
-      var views = $rootElement.find('[me\\:view]');
+      var views = $rootElement.querySelectorAll('[me\\:view]');
       var newViews = [];
 
       for (var i = 0; i < views.length; i++) {
-        var $view = $(views[i]);
-        var viewName = $view.attr('me:view');
+        var $view = views[i];
+        var viewName = $view.getAttribute('me:view');
         var viewParams = {
-          el: $view[0],
+          el: $view,
           name: viewName,
           params: {}
         };
@@ -71,14 +70,14 @@ var ViewManager = /*#__PURE__*/function () {
         /* Look if the view has already been rendered */
 
 
-        if ($view.attr('me:view:render')) {
+        if ($view.hasAttribute('me:view:render')) {
           continue;
         }
 
-        $view.attr('me:view:render', "true");
+        $view.setAttribute('me:view:render', "true");
         /* Add data to view */
 
-        var viewData = $view.attr('me:view:data');
+        var viewData = $view.getAttribute('me:view:data');
         viewParams.params = viewData ? JSON.parse(viewData) : {};
         /* Create instance of the view */
 
@@ -131,10 +130,8 @@ var ViewManager = /*#__PURE__*/function () {
       for (var i in this.views) {
         var view = this.views[i];
 
-        if (_typeof(view.$el) == "object") {
-          var selector = $('html').find(view.$el[0]);
-
-          if (selector.length > 0) {
+        if (_typeof(view) == "object") {
+          if (document.body.contains(view.el)) {
             activeViews.push(view);
           } else {
             view.terminate();
@@ -160,11 +157,11 @@ if (!window.Me) {
 
 Me.manage = new ViewManager();
 Me.views = [];
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function (event) {
   Me.manage.initViews();
 });
 /*
- * ViewBasic 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ViewBasic 3.2.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Basic view for your view system of manageMe
  *
  * Licence :
@@ -222,7 +219,6 @@ var ViewBasic = /*#__PURE__*/function () {
       debug: SETTINGS.DEBUG_MODE ? SETTINGS.DEBUG_MODE : false
     };
     this.el = options.el;
-    this.$el = $(options.el);
     this.params = Object.assign(this.defaults(), options.params);
   }
   /*
@@ -326,7 +322,7 @@ var ViewBasic = /*#__PURE__*/function () {
       this.removeEvents();
     }
   }, {
-    key: "$",
+    key: "toString",
 
     /*
     *
@@ -340,11 +336,6 @@ var ViewBasic = /*#__PURE__*/function () {
     * The selector you were looking for
     *
     * */
-    value: function $(selector) {
-      return this.$el.find(selector);
-    }
-  }, {
-    key: "toString",
     value: function toString() {
       return this.name;
     }
