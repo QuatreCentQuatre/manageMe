@@ -1,5 +1,8 @@
 manageMe
 =======
+
+IMPORTANT NOTE: This repository has been archived and migrated to Bitbucket.
+
 Version - 3.1.0
 - Add function afterAllViewInitialize to have the possibility to trigger events after all view instances are created.
 
