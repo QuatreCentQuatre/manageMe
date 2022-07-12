@@ -1,5 +1,5 @@
 /*
- * ManageMe 3.1.0 (https://github.com/QuatreCentQuatre/manageMe/)
+ * ManageMe 3.2.0 (https://github.com/QuatreCentQuatre/manageMe/)
  * Make view system usage easy
  *
  * Licence :
@@ -34,16 +34,18 @@ class ViewManager {
 	*
 	* */
 
-	initViews($rootElement = $('html')){
+	initViews($rootElement = document.querySelector('html')){
 		this.clearViews();
 
-		let views = $rootElement.find('[me\\:view]');
+		let views = $rootElement.querySelectorAll('[me\\:view]');
 		let newViews = [];
 
 		for (let i = 0; i < views.length; i++) {
-			let $view = $(views[i]);
-			let viewName = $view.attr('me:view');
-			let viewParams = {el: $view[0], name: viewName, params: {}};
+			let $view = views[i];
+
+			let viewName = $view.getAttribute('me:view');
+
+			let viewParams = {el: $view, name: viewName, params: {}};
 
 			/* Look if the view is valid */
 			if (typeof Me.views[viewName] !== "function") {
@@ -52,11 +54,11 @@ class ViewManager {
 			}
 
 			/* Look if the view has already been rendered */
-			if ($view.attr('me:view:render')) {continue;}
-			$view.attr('me:view:render', "true");
+			if ($view.hasAttribute('me:view:render')) {continue;}
+			$view.setAttribute('me:view:render', "true");
 
 			/* Add data to view */
-			let viewData = $view.attr('me:view:data');
+			let viewData = $view.getAttribute('me:view:data');
 			viewParams.params = (viewData) ? JSON.parse(viewData) : {};
 
 			/* Create instance of the view */
@@ -102,12 +104,12 @@ class ViewManager {
 
 	clearViews(){
 		let activeViews  = [];
+
 		for (let i in this.views) {
 			let view = this.views[i];
-			if(typeof view.$el == "object"){
-				let selector = $('html').find(view.$el[0]);
-				
-				if (selector.length > 0) {
+
+			if(typeof view == "object"){
+				if (document.body.contains(view.el)) {
 					activeViews.push(view);
 				} else {
 					view.terminate();
@@ -128,6 +130,6 @@ if(!window.Me){window.Me = {};}
 Me.manage = new ViewManager();
 Me.views = [];
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', (event) => {
 	Me.manage.initViews();
-});
+})

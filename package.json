@@ -1,13 +1,12 @@
 {
   "name": "manage-me",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "author": "QuatreCentQuatre team <info@quatrecentquatre.com> (https://www.quatrecentquatre.com/)",
   "scripts": {
     "production": "node_modules/gulp/bin/gulp.js build"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.8.7",
-    "jquery": "^3.4.1"
+    "@babel/polyfill": "^7.8.7"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
